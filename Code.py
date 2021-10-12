@@ -81,16 +81,18 @@ time.sleep(.5)
 
 # check GP0 for setup mode
 # see setup mode for instructions
-
-
-
-
-
-
-
-
-
-
+progStatus = False
+progStatusPin = digitalio.DigitalInOut(GP0)
+progStatusPin.switch_to_input(pull=digitalio.Pull.UP)
+progStatus = not progStatusPin.value
+defaultDelay = 0
+if(progStatus == False):
+    # not in setup mode, inject the payload
+    duckyScriptPath = "payload.dd"
+    f = open(duckyScriptPath,"r",encoding='utf-8')
+    print("Running payload.dd")
+    previousLine = ""
+    duckyScript = f.readlines()
     for line in duckyScript:
         line = line.rstrip()
         if(line[0:6] == "REPEAT"):
